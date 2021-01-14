@@ -1,0 +1,116 @@
+
+.div{
+    color:white;
+}
+$width : 500px;
+$height : 500px;
+
+.gridP{
+    display: flex;
+    flex-direction: row;
+    margin:20px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    .boxsize{
+        font-family: monospace;
+        width:50px;
+        height:50px;
+        font-size:40px;
+        text-align: center;
+        border: 2px black solid;
+        display:flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        user-select: none;
+    }
+    .grid{
+        cursor:pointer !important;
+        // margin:auto;
+        margin:10px;
+        width:$width;
+        height:$height;
+        display:flex;
+        flex-direction:row;
+        flex-wrap:wrap;
+        .box{
+            @extend .boxsize;
+            background:white;
+            user-select: none;
+            border:1px solid rgb(0, 0, 0);
+        }
+        .start{
+            @extend .boxsize;
+            background:pink;
+            user-select: none;
+            animation: anibox 500ms;
+            animation-direction: alternate;
+        }
+    
+        .end{
+            @extend .boxsize;
+            user-select: none;
+            background:greenyellow;
+        }
+        .mark{
+            user-select: none;
+            background-color: aqua !important;
+        }
+        .path{
+            @extend .boxsize;
+            background-color: rgb(250, 183, 0) !important;
+        }
+        .wall{
+            @extend .boxsize;
+            background-color: black;
+        }
+        @keyframes anibox {
+            from{
+                font-size:20px;
+            }
+            to{
+                font-size:40px; 
+            }
+        }
+        .visiting{
+            @extend .boxsize;
+            transition: all 200ms;
+            background-color: rgb(212, 93, 212);
+        }
+        .visited{
+            @extend .boxsize;
+            background-color: rgb(144, 8, 138);
+        }
+    }
+    .algorithm{
+        display:flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        height: 100%;
+        // justify-content: center;
+        // align-items: center;
+        button{
+            // display: block;
+            width:270px;
+            margin-left:10px;
+            // margin:auto;
+            margin-top:10px;
+            // margin-bottom:10px;
+            cursor: pointer;
+            font-family: monospace;
+            font-size: 25px;
+            background-color: black;
+            // border-radius: 20px;
+            border:2px black solid;
+            color:white;
+        }
+        div{
+            font-size: 30px;
+            margin-left:80px;
+            text-decoration: underline;
+        }
+        button:hover{
+            background: rgb(209, 65, 235);
+        }
+    }
+}
