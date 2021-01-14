@@ -253,6 +253,22 @@ export default class Grid extends React.Component{
             visited:v
         })
     }
+    clearBoard=()=>{
+        let node = this.state.node;
+        let visited = this.state.visited;
+        for(let i=0;i<this.state.R; i++){
+            for(let j=0; j< this.state.C; j++){
+                node[this.state.C*i+j].classList.remove(styles.wall)
+                node[this.state.C*i+j].classList.remove(styles.visiting)
+                node[this.state.C*i+j].classList.remove(styles.visited)
+                node[this.state.C*i+j].classList.remove(styles.path)
+                visited[i][j]=false;
+            }
+        }
+        this.setState({
+            visited:visited
+        })
+    }
     render(){
         let list=[];
         let box=[];
@@ -282,6 +298,7 @@ export default class Grid extends React.Component{
                 <button onMouseDown={this.dfs} >Run dijkstra Search</button>
                 <div>Options</div>
                 <button onMouseDown={this.generateWalls} >Generate  Random Walls</button>
+                <button onMouseDown={this.clearBoard} >Clear Board</button>
              </div>   
             <div className={styles.grid}>
                 {box}
