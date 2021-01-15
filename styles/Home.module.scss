@@ -222,6 +222,9 @@ $box-area : calc(500px/10);
                 width: $box-area !important;
                 height: $box-area !important;
             }
+            .start >div,.end >div{
+                padding-top: 11px;
+            }
             align-items: center;
             justify-content: center;
         }
