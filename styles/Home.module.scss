@@ -174,12 +174,16 @@ $box-area : calc(500px/10);
     border-bottom-right-radius: unset;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
+    position:fixed;
+    bottom: 0px;
+    left:0px;
+    right:0px;
 }
 .notice{
     display:flex;
     flex-wrap: wrap;
     margin:10px;
-    width:300px;
+    width:250px;
     padding:10px;
     background-color: black;
     color:white;
@@ -188,4 +192,7 @@ $box-area : calc(500px/10);
     font-family: monospace;
     border:1px solid black;
     border-radius: 10px;
+}
+.icon{
+    background: black;
 }

@@ -4,8 +4,8 @@ export default class Grid extends React.Component{
     state={
         C:10,
         R:10,
-        start:{x:1,y:4, p: null},
-        end:{x:9,y:9, p: null},
+        start:{x:0,y:4, p: null},
+        end:{x:9,y:4, p: null},
         visited:[],
         node:[],
         ndij:false
@@ -412,6 +412,9 @@ export default class Grid extends React.Component{
                     className={styles.box}
                     className={this.determineClass(i,j)}
                     onMouseDown={()=>this.mouseDown(i,j)}
+                    onTouchStart={()=>this.mouseDown(i,j)}
+                    onTouchMove={()=>this.mouseEnter(i,j)}
+                    onTouchEnd={()=>this.mouseLeave(i,j)}
                     onMouseUp={()=>this.mouseLeave(i,j)}
                     onMouseEnter={()=>this.mouseEnter(i,j)
                     }

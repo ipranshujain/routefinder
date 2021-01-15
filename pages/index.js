@@ -12,7 +12,8 @@ export default function Home() {
     <div>
       <Head>
         <title>Route Finder Application</title>
-        <link rel="icon" href="/favicon.ico" />
+        
+        <link rel="icon" href="/1.jpeg" />
       </Head>
       <main>
         <Top/>
