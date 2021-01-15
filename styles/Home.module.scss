@@ -138,7 +138,8 @@ $box-area : calc(500px/10);
         }
         div{
             font-size: 30px;
-            margin-left:80px;
+            // margin-left:80px;
+            text-align: center;
             text-decoration: underline;
         }
         button:hover{
@@ -178,6 +179,11 @@ $box-area : calc(500px/10);
     bottom: 0px;
     left:0px;
     right:0px;
+    div span{
+        // text-decoration: none !important;
+        display:none;
+        // font-size: 10px;
+    }
 }
 .notice{
     display:flex;
@@ -195,4 +201,38 @@ $box-area : calc(500px/10);
 }
 .icon{
     background: black;
+}
+@media(max-width:500px){
+    $width:750px;
+    $box-area:calc(750px/10);
+    .gridP{
+        flex-direction: column;
+        .algorithm{
+            align-items: center;
+        }
+        .notice{
+            align-self: center;
+        }
+        .grid{
+            width: $width;
+            height: $width;
+            flex-wrap: wrap;
+            align-items: center;
+            .boxsize{
+                width: $box-area !important;
+                height: $box-area !important;
+            }
+            align-items: center;
+            justify-content: center;
+        }
+
+        
+    }
+    .navbar2{
+        div span{
+            text-decoration: none !important;
+            font-size: 15px;
+            display:inline;
+        }
+    }
 }

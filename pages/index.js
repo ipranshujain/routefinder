@@ -20,7 +20,7 @@ export default function Home() {
         <Grid/>
       </main>
       <footer>
-        <div className={styles.navbar2}><div><a href="https://thepranshujain.herokuapp.com">Made by Pranshu Jain</a></div></div>
+        <div className={styles.navbar2}><div><a href="https://thepranshujain.herokuapp.com">Made by Pranshu Jain</a>{" "}<span> | (Best works on PC.)</span></div></div>
       </footer>
     </div>
   )

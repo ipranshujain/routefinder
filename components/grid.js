@@ -334,7 +334,7 @@ export default class Grid extends React.Component{
                     d[index]=d[j]+W;
                     node[index].classList.add(styles.visiting);
                     parent[index]= j;
-                    await this.sleep(20)
+                    await this.sleep(40)
                 }
                 }  
             }
