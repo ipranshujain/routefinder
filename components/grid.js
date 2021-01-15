@@ -7,7 +7,8 @@ export default class Grid extends React.Component{
         start:{x:1,y:4, p: null},
         end:{x:9,y:9, p: null},
         visited:[],
-        node:[]
+        node:[],
+        ndij:false
     }
     down=false;
     shiftstart=false;
@@ -44,10 +45,12 @@ export default class Grid extends React.Component{
             if(this.state.start.x==j&&this.state.start.y==i){
                 this.shiftstart=true;   
                 node[this.state.C*i+j].classList.remove(styles.start);
+                // node[this.state.C*i+j].innerHTML="<div></div>";
                 // node[this.state.C*i+j].classList.add(styles.box);
             }else{
                 this.shiftend=true;
                 node[this.state.C*i+j].classList.remove(styles.end);
+            // node[this.state.C*i+j].innerHTML="<div></div>";
                 // node[this.state.C*i+j].classList.add(styles.box);
             }
             return;
@@ -90,6 +93,7 @@ export default class Grid extends React.Component{
                 }
             })
             node[this.state.C*i+j].classList.add(styles.start);
+            // node[this.state.C*i+j].innerHTML="<div>S</div>";
             return;
         }
         if(this.shiftend){
@@ -100,6 +104,7 @@ export default class Grid extends React.Component{
                 }
             })
             node[this.state.C*i+j].classList.add(styles.end);
+            // node[this.state.C*i+j].innerHTML="<div>E</div>";
             return;
         }
         if(this.down){
@@ -177,6 +182,7 @@ export default class Grid extends React.Component{
             } 
     }
     dfs=async()=>{
+        this.clear();
         let node = this.state.node;
         console.log(node);
         let q =[];
@@ -232,6 +238,124 @@ export default class Grid extends React.Component{
                 }
             } 
     }
+    dijkstra=async()=>{
+        this.setState({
+            ndij:true
+        })
+        let node= this.state.node;
+        
+        let visited= this.state.visited;
+        if(visited[this.state.start.y][this.state.start.x]){
+            for(i=0;i<this.state.R;i++){
+                for(j=0;j<this.state.C;j++){
+                    if(!node[this.state.C*i+j].classList.contains(styles.wall)){
+                        visited[i][j]=false;
+                        node[this.state.C*i+j].classList.remove(styles.visited)
+                        node[this.state.C*i+j].classList.remove(styles.visiting)
+                        node[this.state.C*i+j].classList.remove(styles.path)
+                    }
+                }
+            }
+        }
+        visited[this.state.start.y][this.state.start.x]=true;
+        this.setState({
+            visited:visited
+        })  
+        let i,j;
+        let weight=[];
+        for(i=0;i<this.state.R*this.state.C;i++){
+            weight.push(-1);
+        }
+        for(i=0;i<this.state.R;i++){
+            for(j=0;j<this.state.C;j++){
+                if(!visited[i][j]&&!this.checkSE(i,j)){
+                    weight[i*this.state.C+j] = Math.floor(Math.random()*20+1);
+                    var child=node[i*this.state.C+j].childNodes;
+                    child[0].appendChild(document.createTextNode(`${weight[i*this.state.C+j]}`))
+                }
+            }
+        }
+        let count=0,ii,jj,id,num,k;
+        let mark =[];
+        for(i=0;i<this.state.R*this.state.C;i++){
+            mark.push(false);
+        }
+        let d = [];
+        for(i=0;i<this.state.R*this.state.C;i++){
+            d.push(10e5);
+        }
+        let parent = [];
+        for(i=0;i<this.state.R*this.state.C;i++){
+            parent.push(null);
+        }
+        d[this.state.start.y*this.state.C+this.state.start.x]=0;
+        console.log("Hey, listen",this.state.start.y*this.state.C+this.state.start.x)
+        const ri = [-1,1,0,0];
+        const ci = [0,0,-1,1];
+        let C = this.state.C,R = this.state.R;
+        for(i=0;i<this.state.R*this.state.C;i++){
+            j=-1; num=10e5;
+            for(id=0;id<this.state.R*this.state.C;id++){
+                // console.log("I am d",d[id])
+                if(!mark[id]&&d[id]<num){
+                    j=id; num = d[id];
+                }
+            }
+            mark[j]=true;
+            let r = Math.floor(j/C);
+            let c = j-r*C;
+            if(r==this.state.end.y&&c==this.state.end.x){
+                while(parent[j]!=null){
+                    node[j].classList.add(styles.path);
+                    j= parent[j];
+                    await this.sleep(50);
+                }
+                node[j].classList.add(styles.path);
+                this.setState({
+                    ndij:false
+                })
+                return;
+            }
+            // console.log("I am J",j);
+            if(j!=-1)
+            {
+            node[j].classList.add(styles.visited);
+            for(k=0;k<4;k++){
+                let r = Math.floor(j/C);
+                let c = j-r*C;
+                r =r+ ri[k];
+                // console.log("I am inside")
+                c =c+ ci[k];
+                let index = r*C+c;
+                if(r>=0&&r<R&&c>=0&&c<C&&!visited[r][c]){
+                    let W = weight[r*C+c];
+                    console.log("index",index);
+                    if(d[j]+W<d[index]){
+                    d[index]=d[j]+W;
+                    node[index].classList.add(styles.visiting);
+                    parent[index]= j;
+                    await this.sleep(20)
+                }
+                }  
+            }
+        }
+        }
+        this.setState({
+            ndij:false
+        })
+    }
+    clear(){
+        let node = this.state.node;
+        for(let i=0;i<this.state.R*this.state.C;i++){
+            if(!this.checkSE(Math.floor(i/this.state.C),i-this.state.C*Math.floor(i/this.state.C))){
+                // node[i].innerHTML=`<div></div>`
+            }else if(Math.floor(i/this.state.C)==this.state.start.y&&i-this.state.C*Math.floor(i/this.state.C)==this.state.start.x){
+                // node[i].innerHTML=`<div>S</div>`
+            }else{
+                // node[i].innerHTML=`<div>E</div>` 
+            }
+        }
+    }
     generateWalls=()=>{
         let v=[];
         let node = this.state.node;
@@ -254,17 +378,25 @@ export default class Grid extends React.Component{
         })
     }
     clearBoard=()=>{
+
         let node = this.state.node;
         let visited = this.state.visited;
+        let {R,C}= this.state;
         for(let i=0;i<this.state.R; i++){
             for(let j=0; j< this.state.C; j++){
                 node[this.state.C*i+j].classList.remove(styles.wall)
                 node[this.state.C*i+j].classList.remove(styles.visiting)
                 node[this.state.C*i+j].classList.remove(styles.visited)
                 node[this.state.C*i+j].classList.remove(styles.path)
+                var child=node[i*this.state.C+j].childNodes;
+                if(!this.checkSE(i,j)){
+                    child[0].innerHTML=``
+                }
                 visited[i][j]=false;
             }
         }
+
+        this.clear();
         this.setState({
             visited:visited
         })
@@ -289,20 +421,27 @@ export default class Grid extends React.Component{
         }
 
         return(
+            <div>
+                 
             <div className={styles.gridP}>
-             <div  className={styles.algorithm}>
-                <div>Algorithms</div>
-                <button onMouseDown={this.bfs} >Run Breadth First Search</button>
-                <button onMouseDown={this.dfs} >Run Depth First Search</button>
-                <button onMouseDown={this.dfs} >Run A* Search</button>
-                <button onMouseDown={this.dfs} >Run dijkstra Search</button>
-                <div>Options</div>
-                <button onMouseDown={this.generateWalls} >Generate  Random Walls</button>
-                <button onMouseDown={this.clearBoard} >Clear Board</button>
-             </div>   
             <div className={styles.grid}>
                 {box}
             </div>
+            {this.state.ndij&&<div className={styles.notice}>To keep things simple weights are randomly assigned to each cell and then according to assigned weight the algorithm will find the shortest path.</div>
+            || <div  className={styles.algorithm}>
+            <div>Algorithms</div>
+            <button onMouseDown={this.bfs} >Run Breadth First Search</button>
+            <button onMouseDown={this.dfs} >Run Depth First Search</button>
+            <button onMouseDown={this.dfs} >Run A* Search</button>
+            <button onMouseDown={this.dijkstra} >Run dijkstra Search</button>
+            <div>Options</div>
+            <button onMouseDown={this.generateWalls} >Generate  Random Walls</button>
+            <button className={styles.clearBoard} onMouseDown={this.clearBoard} >Clear Board</button>
+            </div>
+            }   
+        
+            </div>
+            
             </div>
         )
     }

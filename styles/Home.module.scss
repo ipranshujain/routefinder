@@ -78,6 +78,7 @@ $box-area : calc(500px/10);
             // animation: anibox 100ms;
             // animation-direction: alternate;
         }
+        
         @keyframes anibox {
             from{
                 transform: scale(0.5);
@@ -143,5 +144,48 @@ $box-area : calc(500px/10);
         button:hover{
             background: rgb(209, 65, 235);
         }
+        .clearBoard{
+            background:rgb(51, 203, 223);
+        }
     }
+}
+.navbar{
+    // padding-top:10px;
+    background-color: black;
+    color:white;
+    font-size:20px;
+    padding-left:20px;
+    font-weight: bold;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    div{
+        text-align: center;
+        text-decoration: underline rgb(8, 186, 209);
+        a{
+        text-decoration: underline rgb(8, 186, 209);
+
+        }
+        padding:10px;
+    }
+}
+.navbar2{
+    @extend .navbar;
+    border-bottom-left-radius: unset;
+    border-bottom-right-radius: unset;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+.notice{
+    display:flex;
+    flex-wrap: wrap;
+    margin:10px;
+    width:300px;
+    padding:10px;
+    background-color: black;
+    color:white;
+    font-size: 20px;
+    transition: all 200ms;
+    font-family: monospace;
+    border:1px solid black;
+    border-radius: 10px;
 }

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 // import Grid from '../components/grid'
 import Top from '../components/top'
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Home.module.scss'
 import dynamic from 'next/dynamic'
 const Grid = dynamic(
   () => import('../components/grid'),
@@ -18,6 +18,9 @@ export default function Home() {
         <Top/>
         <Grid/>
       </main>
+      <footer>
+        <div className={styles.navbar2}><div><a href="https://thepranshujain.herokuapp.com">Made by Pranshu Jain</a></div></div>
+      </footer>
     </div>
   )
 }
