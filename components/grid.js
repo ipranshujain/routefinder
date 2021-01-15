@@ -271,7 +271,7 @@ export default class Grid extends React.Component{
                 if(!visited[i][j]&&!this.checkSE(i,j)){
                     weight[i*this.state.C+j] = Math.floor(Math.random()*20+1);
                     var child=node[i*this.state.C+j].childNodes;
-                    child[0].appendChild(document.createTextNode(`${weight[i*this.state.C+j]}`))
+                    child[0].innerHTML=`${weight[i*this.state.C+j]}`
                 }
             }
         }
@@ -432,7 +432,7 @@ export default class Grid extends React.Component{
             <div>Algorithms</div>
             <button onMouseDown={this.bfs} >Run Breadth First Search</button>
             <button onMouseDown={this.dfs} >Run Depth First Search</button>
-            <button onMouseDown={this.dfs} >Run A* Search</button>
+            {/* <button onMouseDown={this.dfs} >Run A* Search</button> */}
             <button onMouseDown={this.dijkstra} >Run dijkstra Search</button>
             <div>Options</div>
             <button onMouseDown={this.generateWalls} >Generate  Random Walls</button>
