@@ -10,6 +10,10 @@ export default class Grid extends React.Component{
         node:[],
         ndij:false
     }
+    info=["Breadth first Search is a technique in which we visit the neightbor nodes of current node first and then visit other nodes at next depth breadthwise. It gurantees shortest path. It can't find shortest path for weighted graph.",
+"Depth first Search is a technique in which we pick one node and go on the depth of that node first before going to other nodes. It doesn't guarantee shortest path.",
+"Dijkstra Algorithm is used to find shortest path for weighted path. Note: To keep things simple weights are randomly assigned to each cell and then according to assigned weight the algorithm will find the shortest path.",
+"1.Click and Drag over grid to create WALL.(Only possible in PC)\n2.Click and Drag start or end to change their position. (Only possible in PC)\n3. Run any given algorithm in menu. \n4. Clear Board to run new algorithm.\n5. Generate Random Walls."]
     down=false;
     shiftstart=false;
     shiftend=false;
@@ -125,6 +129,9 @@ export default class Grid extends React.Component{
         return new Promise(resolve => setTimeout(resolve, ms));
       }
     bfs=async()=>{
+        this.setState({
+            ndij:1
+        })
         let node = this.state.node;
         console.log(node);
         let q =[];
@@ -165,6 +172,9 @@ export default class Grid extends React.Component{
                         ele=ele.p;
                         await this.sleep(50);
                     }
+                    this.setState({
+                        ndij:0
+                    })
                     return;
                 }
                 for(i=0;i<4;i++){
@@ -176,12 +186,18 @@ export default class Grid extends React.Component{
                         visited[r][c]=true;
                         if(!((r==this.state.start.y&&c==this.state.start.x)||(r==this.state.end.y&&c==this.state.end.x)))
                             node[this.state.C*r+c].classList.add(styles.visiting);
-                        await this.sleep(30);
+                        await this.sleep(40);
                     }
                 }
             } 
+            this.setState({
+                ndij:0
+            })
     }
     dfs=async()=>{
+        this.setState({
+            ndij:2
+        })
         this.clear();
         let node = this.state.node;
         console.log(node);
@@ -222,6 +238,9 @@ export default class Grid extends React.Component{
                         ele=ele.p;
                         await this.sleep(50);
                     }
+                    this.setState({
+                        ndij:0
+                    })
                     return;
                 }
                 for(i=0;i<4;i++){
@@ -233,14 +252,18 @@ export default class Grid extends React.Component{
                         visited[r][c]=true;
                         if(!((r==this.state.start.y&&c==this.state.start.x)||(r==this.state.end.y&&c==this.state.end.x)))
                             node[this.state.C*r+c].classList.add(styles.visiting);
-                        await this.sleep(30);
+                        await this.sleep(40);
                     }
                 }
             } 
+            this.setState({
+                ndij:0
+
+            })
     }
     dijkstra=async()=>{
         this.setState({
-            ndij:true
+            ndij:3
         })
         let node= this.state.node;
         
@@ -312,7 +335,7 @@ export default class Grid extends React.Component{
                 }
                 node[j].classList.add(styles.path);
                 this.setState({
-                    ndij:false
+                    ndij:0
                 })
                 return;
             }
@@ -341,7 +364,7 @@ export default class Grid extends React.Component{
         }
         }
         this.setState({
-            ndij:false
+            ndij:0
         })
     }
     clear(){
@@ -401,6 +424,15 @@ export default class Grid extends React.Component{
             visited:visited
         })
     }
+    howto=async()=>{
+        this.setState({
+                ndij:4
+        })
+        await this.sleep(5000);
+        this.setState({
+            ndij:false
+        })
+    }
     render(){
         let list=[];
         let box=[];
@@ -424,27 +456,25 @@ export default class Grid extends React.Component{
         }
 
         return(
-            <div>
-                 
+            <div>        
             <div className={styles.gridP}>
             <div className={styles.grid}>
                 {box}
             </div>
-            {this.state.ndij&&<div className={styles.notice}>To keep things simple weights are randomly assigned to each cell and then according to assigned weight the algorithm will find the shortest path.</div>
+            {this.state.ndij&&<div className={styles.notice}>{this.info[this.state.ndij-1]}</div>
             || <div  className={styles.algorithm}>
             <div>Algorithms</div>
             <button onMouseDown={this.bfs} >Run Breadth First Search</button>
+            <button onMouseDown={this.dijkstra} >Run dijkstra Search</button>
             <button onMouseDown={this.dfs} >Run Depth First Search</button>
             {/* <button onMouseDown={this.dfs} >Run A* Search</button> */}
-            <button onMouseDown={this.dijkstra} >Run dijkstra Search</button>
             <div>Options</div>
             <button onMouseDown={this.generateWalls} >Generate  Random Walls</button>
             <button className={styles.clearBoard} onMouseDown={this.clearBoard} >Clear Board</button>
+            <button onMouseDown={this.howto}>How to Use?</button>
             </div>
             }   
-        
             </div>
-            
             </div>
         )
     }
